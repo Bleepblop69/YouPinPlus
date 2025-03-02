@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "YouPinPlus",
+    "version": "1.0",
+    "description": "Convert prices on YouPin898 to your selected currency.",
+    "permissions": ["storage", "activeTab", "scripting"],
+    "host_permissions": ["https://youpin898.com/*"],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+      "default_popup": "popup.html"
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://youpin898.com/*"],
+        "js": ["content.js"],
+        "css": ["styles.css"]
+      }
+    ]
+  }
+  
