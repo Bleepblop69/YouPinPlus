@@ -4,7 +4,15 @@
     "version": "1.0",
     "description": "Convert prices on YouPin898 to your selected currency.",
     "permissions": ["storage", "activeTab", "scripting"],
-    "host_permissions": ["https://youpin898.com/*"],
+    "icons": {
+      "16": "img/ypp.png",
+      "48": "img/ypp.png",
+      "128": "img/ypp.png"
+	  },
+    "host_permissions": [
+      "https://youpin898.com/*",
+      "https://www.youpin898.com/*"
+    ],
     "background": {
       "service_worker": "background.js"
     },
@@ -13,7 +21,7 @@
     },
     "content_scripts": [
       {
-        "matches": ["https://youpin898.com/*"],
+        "matches": ["https://youpin898.com/*","https://www.youpin898.com/*"],
         "js": ["content.js"],
         "css": ["styles.css"]
       }
