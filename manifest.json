@@ -3,7 +3,7 @@
     "name": "YouPinPlus",
     "version": "1.0",
     "description": "Convert prices on YouPin898 to your selected currency.",
-    "permissions": ["storage", "activeTab", "scripting"],
+    "permissions": ["storage", "activeTab"],
     "icons": {
       "16": "img/ypp.png",
       "48": "img/ypp.png",
