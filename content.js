@@ -155,11 +155,24 @@ document.querySelectorAll(".map-item").forEach(item => {
 
 
 function searchFloatDB(datarow) {
-    const itemName = encodeURIComponent(datarow.commodityHashName);
-    const floatDBUrl = `https://floatdb.com/search?q=${itemName}`;
-    console.log(`[YPP] Searching FloatDB for: ${itemName}`);
+    if (!datarow || !datarow.paintSeed || !datarow.abrade) {
+        console.warn("[YPP] Missing required item data for CSFloat search.");
+        return;
+    }
+
+    const floatValue = parseFloat(datarow.abrade);
+    const params = new URLSearchParams({
+        paintSeed: datarow.paintSeed,
+        min: floatValue,
+        max: floatValue
+    });
+
+    const floatDBUrl = `https://csfloat.com/db?${params.toString()}`;
+
+    console.log(`[YPP] Searching CSFloat for: Paint Seed ${datarow.paintSeed}, Float ${floatValue}`);
     window.open(floatDBUrl, "_blank");
 }
+
 
 // Modified processSellOrder function
 async function processSellOrder(transferData, retryCount = 10, delay = 1000) {
@@ -240,7 +253,7 @@ async function processSellOrder(transferData, retryCount = 10, delay = 1000) {
                                  searchFloatDBButton.style.borderRadius = "3px";
  
                                  searchFloatDBButton.addEventListener("click", () => {
-                                    searchFloatDB(datarow)
+                                    searchFloatDB(datarow);
                                  });
  
                                  buttonContainer.appendChild(searchFloatDBButton);
