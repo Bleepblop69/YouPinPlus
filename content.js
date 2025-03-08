@@ -221,7 +221,7 @@ async function processSellOrder(transferData, retryCount = 10, delay = 1000) {
 
                     const wearContainer = row.children[1];
                     const priceContainer = row.children[4];
-                    const priceElement = priceContainer.firstChild;
+                    const priceElement = priceContainer.children[0];
                     const priceCNY = priceElement.textContent.replace("¥", "").trim();
 
                     // Only create buttons if datarow.actions is not empty
@@ -244,7 +244,6 @@ async function processSellOrder(transferData, retryCount = 10, delay = 1000) {
                                  const searchFloatDBButton = document.createElement("button");
                                  searchFloatDBButton.className = "search-floatdb-btn";
                                  searchFloatDBButton.textContent = "FloatDB";
-                                 searchFloatDBButton.style.padding = "5px 10px";
                                  searchFloatDBButton.style.fontSize = "10px";
                                  searchFloatDBButton.style.backgroundColor = "#444";
                                  searchFloatDBButton.style.color = "white";
@@ -257,13 +256,11 @@ async function processSellOrder(transferData, retryCount = 10, delay = 1000) {
                                  });
  
                                  buttonContainer.appendChild(searchFloatDBButton);
-                                 buttonContainer.appendChild(searchFloatDBButton);
 
 
                                 const inspectServerButton = document.createElement("button");
                                 inspectServerButton.className = "inspect-btn";
                                 inspectServerButton.textContent = "In-Server";
-                                inspectServerButton.style.padding = "5px 10px";
                                 inspectServerButton.style.fontSize = "10px";
                                 inspectServerButton.style.backgroundColor = "#444";
                                 inspectServerButton.style.color = "white";
@@ -286,7 +283,6 @@ async function processSellOrder(transferData, retryCount = 10, delay = 1000) {
                             const inspectGameButton = document.createElement("button");
                             inspectGameButton.className = "inspect-btn";
                             inspectGameButton.textContent = "In-Game";
-                            inspectGameButton.style.padding = "5px 10px";
                             inspectGameButton.style.fontSize = "10px";
                             inspectGameButton.style.backgroundColor = "#444";
                             inspectGameButton.style.color = "white";
@@ -301,6 +297,43 @@ async function processSellOrder(transferData, retryCount = 10, delay = 1000) {
                             });
 
                             buttonContainer.appendChild(inspectGameButton);
+
+                            // !gen Button
+                            const genButton = document.createElement("button");
+                            genButton.className = "gen-btn";
+                            genButton.textContent = "!gen";
+                            genButton.style.fontSize = "10px";
+                            genButton.style.backgroundColor = "#008CBA"; // Blue color
+                            genButton.style.color = "white";
+                            genButton.style.border = "none";
+                            genButton.style.cursor = "pointer";
+                            genButton.style.borderRadius = "3px";
+
+                            genButton.addEventListener("click", async () => {
+                                if (!datarow.actions) {
+                                    console.warn("[YPP] No inspect link found for this item.");
+                                    return;
+                                }
+
+                                const apiUrl = `https://api.cs2inspects.com/getGenCodeV2?url=${encodeURIComponent(datarow.actions)}`;
+                                console.log(`[YPP] Fetching GenCode from: ${apiUrl}`);
+
+                                try {
+                                    const response = await fetch(apiUrl);
+                                    if (!response.ok) {
+                                        throw new Error(`HTTP error! Status: ${response.status}`);
+                                    }
+                                    console.log(response)
+                                    
+                                    const jsonResponse = await response.json();
+                                    console.log(`[YPP] GenCode 0: ${jsonResponse.gencode_0}`);
+                                } catch (error) {
+                                    console.error("[YPP] Error fetching GenCode:", error);
+                                }
+                            });
+
+                            buttonContainer.appendChild(genButton);
+
                             wearContainer.appendChild(buttonContainer);
                         }
                     }
